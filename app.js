@@ -1,19 +1,22 @@
+require('dotenv/config')
 const express = require('express')
 const mongoose = require('mongoose')
-require('dotenv/config')
-
+const postsRoute = require('./routes/posts')
+const cors = require('cors')
 const app = express();
 
-// ROUTES
+// Middlewares
+app.use(cors())
+app.use(express.json())
+
+
+// import routes
+app.use('/posts', postsRoute)
 
 app.get('/', (req, res) => {
-    res.send('We are on home')
+    res.send('HOME GET')
 })
 
-app.get('/posts', (req, res) => {
-    console.log('Das ist actual route');
-    res.send('We are on posts')
-})
 
 // Connecto to DB
 mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
@@ -24,7 +27,8 @@ mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedT
     }
 })
 
-// start listening the server
 
+// start listening the server
 app.listen(3000);
+
 
